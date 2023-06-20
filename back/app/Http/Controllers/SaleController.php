@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 
 class SaleController extends Controller{
     public function index(Request $request){
-        $dateInit = $request->get('dateInit');
-        $dateEnd = $request->get('dateEnd');
-        $sales = Sale::whereBetween('date', [$dateInit, $dateEnd])->get();
+        $dateInit = $request->get('dateIni');
+        $dateEnd = $request->get('dateFin');
+        $sales = Sale::whereBetween('date', [$dateInit, $dateEnd])
+            ->with(['details','client','user'])
+            ->orderBy('id','desc')->get();
         return $sales;
     }
     public function salesGasto(StoreSaleRequest $request){
@@ -25,6 +27,7 @@ class SaleController extends Controller{
         $sales = new Sale();
         $sales->date = date('Y-m-d');
         $sales->time = date('H:i:s');
+        $sales->dateTime = date('Y-m-d H:i:s');
         $sales->total = $request->montoTotal;
         $sales->description = $request->concepto;
         $sales->type = 'Egreso';
@@ -43,5 +46,10 @@ class SaleController extends Controller{
 
         $detail->save();
 
+    }
+    public function update(UpdateSaleRequest $request, $id){
+        $sale = Sale::find($id);
+        $sale->update($request->all());
+        return $sale;
     }
 }

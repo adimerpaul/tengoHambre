@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2)->default(0);
             $table->date('date')->nullable();
             $table->time('time')->nullable();
+            $table->dateTime('dateTime')->nullable();
             $table->string('type')->default('Ingreso');
             $table->string('description')->nullable();
             $table->string('canceled')->default('No');

@@ -26,10 +26,6 @@ export default boot(({ app, router }) => {
       if (!value) return ''
       const date = moment(String(value)).format('DD') + ' ' + mes + ' ' + moment(String(value)).format('YYYY') + ' ' + moment(String(value)).format('hh:mm A')
       return date
-    },
-    capitalize (value) {
-      if (!value) return ''
-      return value.charAt(0).toUpperCase() + value.slice(1)
     }
   }
   app.config.globalProperties.$store = useCounterStore()

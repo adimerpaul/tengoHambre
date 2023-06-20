@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products');
             $table->decimal('price', 10, 2)->default(0);
-            $table->decimal('quantity', 10, 2)->default(0);
+            $table->integer('quantity')->default(0);
             $table->decimal('total', 10, 2)->default(0);
             $table->string('productName')->nullable();
             $table->timestamps();

@@ -2,7 +2,69 @@ import QRCode from 'qrcode'
 import { useCounterStore } from 'stores/example-store'
 import { Printd } from 'printd'
 import conversor from 'conversor-numero-a-letras-es-ar'
+import { jsPDF } from 'jspdf'
+import moment from 'moment'
 export class Imprimir {
+  static facturaPdf (sale) {
+    /* eslint-disable */
+    const doc = new jsPDF({
+      // orientation: 'l',
+      unit: 'mm',
+      format: [70, 55]
+    })
+    let y = 5
+    doc.setFont('courier', 'bold')
+    doc.setFontSize(10)
+    doc.text(useCounterStore().env.razon, 28, y, { align: 'center' })
+    doc.setFont(undefined, 'normal')
+    doc.text(useCounterStore().env.nit, 28, y+4, { align: 'center' })
+    doc.text(useCounterStore().env.direccion, 28, y+8, { align: 'center', maxWidth: 50 })
+    doc.text(useCounterStore().env.telefono, 28, y+16, { align: 'center' })
+    doc.setFont(undefined, 'bold')
+    doc.text(useCounterStore().user.sucursal, 28, y+20, { align: 'center' })
+    doc.line(5, y+22, 50, y+22)
+
+    doc.setFontSize(9)
+    doc.text('CLIENTE', 5, y+25)
+    doc.setFont(undefined, 'normal')
+    doc.text(sale.client==null?'':sale.client.name, 28, y+28, { align: 'center', maxWidth: 50 })
+    doc.setFont(undefined, 'bold')
+    doc.text('FECHA', 5, y+32)
+    doc.setFont(undefined, 'normal')
+    doc.text(sale.date, 28, y+32, { align: 'center', maxWidth: 50 })
+    doc.setFont(undefined, 'bold')
+    doc.text('TIPO', 5, y+36)
+    doc.setFont(undefined, 'normal')
+    doc.text(sale.type, 28, y+36, { align: 'center', maxWidth: 50 })
+    doc.line(5, y+38, 50, y+38)
+
+    doc.setFont(undefined, 'bold')
+    doc.text('CANT    PRODUCT   SUB', 5, y+41)
+    let y2 = y+45
+    doc.setFont(undefined, 'normal')
+    sale.details.forEach(r => {
+      doc.setFontSize(7)
+      doc.text(`${r.quantity} ${r.productName}`, 5, y2, { maxWidth: 40 })
+      doc.setFontSize(9)
+      doc.text(`${r.total}`, 50, y2, { align: 'right'})
+      y2 += 4
+    })
+    y = y2
+    doc.line(5, y, 50, y)
+    doc.setFont(undefined, 'bold')
+    doc.text('TOTAL', 5, y+4)
+    doc.setFont(undefined, 'normal')
+    doc.text(`${sale.total}`, 50, y+4, { align: 'right' })
+    doc.setFont(undefined, 'bold')
+    doc.text('USUARIO', 5, y+8)
+    doc.setFont(undefined, 'normal')
+    doc.text(useCounterStore().user.name, 50, y+8, { align: 'right', maxWidth: 50 })
+
+    doc.save(`sale-${sale.id}${moment().format('YYYYMMDDHHmmss')}.pdf`)
+    // doc.autoPrint();
+    // doc.output('dataurlnewwindow', {filename: 'comprobante.pdf'});
+  }
+
   static factura (factura) {
     return new Promise((resolve, reject) => {
       const ClaseConversor = conversor.conversorNumerosALetras
