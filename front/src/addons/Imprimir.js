@@ -6,7 +6,7 @@ import { jsPDF } from 'jspdf'
 import moment from 'moment'
 export class Imprimir {
   static facturaPdf (sale) {
-    console.log(sale.details.length)
+    console.log(sale.details)
     /* eslint-disable */
     const doc = new jsPDF({
       // orientation: 'l',
