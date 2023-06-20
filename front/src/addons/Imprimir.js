@@ -6,11 +6,12 @@ import { jsPDF } from 'jspdf'
 import moment from 'moment'
 export class Imprimir {
   static facturaPdf (sale) {
+    console.log(sale.details.length)
     /* eslint-disable */
     const doc = new jsPDF({
       // orientation: 'l',
       unit: 'mm',
-      format: [70, 55]
+      format: [60+4*sale.details.length, 55]
     })
     let y = 5
     doc.setFont('courier', 'bold')

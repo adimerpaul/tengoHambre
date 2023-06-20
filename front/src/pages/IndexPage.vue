@@ -163,7 +163,7 @@
       </q-card>
     </q-dialog>
 <!--    <div ref="message">Thib <b>ssdsd</b>s is text that you wish toasassa copy</div>-->
-    <pre>{{sales}}</pre>
+<!--    <pre>{{proveedores}}</pre>-->
   </q-page>
 </template>
 
@@ -256,7 +256,7 @@ export default {
         this.loading = true
         this.$axios.post('clients', {
           name: data,
-          type: 'provider'
+          type: 'Proveedor'
         }).then(res => {
           this.$alert.success('Proveedor creado con éxito')
           this.providerGet()
@@ -269,12 +269,12 @@ export default {
     },
     providerGet () {
       this.proveedores = [{ id: 0, name: 'Busca o selecciona un proveedor' }]
-      this.$axios.get('clients').then(res => {
-        res.data.forEach(client => {
-          if (client.type === 'provider') {
-            this.proveedores.push(client)
-          }
-        })
+      this.$axios.get('clients?type=Proveedor').then(res => {
+        // res.data.forEach(client => {
+        //   if (client.type === 'provider') {
+        this.proveedores = this.proveedores.concat(res.data)
+        //   }
+        // })
       })
     },
     downloadReport () {

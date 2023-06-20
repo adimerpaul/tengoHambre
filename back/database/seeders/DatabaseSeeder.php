@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Client;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,6 +27,8 @@ class DatabaseSeeder extends Seeder
             // OrderSeeder::class,
             // OrderProductSeeder::class,
         ]);
-        Client::factory(10)->create();
+        $sql = storage_path('sql/clients_202306200624.sql');
+        DB::unprepared(file_get_contents($sql));
+        Client::factory(5)->create();
     }
 }

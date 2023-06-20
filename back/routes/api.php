@@ -26,4 +26,5 @@ Route::group(['middleware'=>'auth:sanctum'],function () {
     Route::resource('sales', \App\Http\Controllers\SaleController::class);
     Route::resource('products', \App\Http\Controllers\ProductController::class);
     Route::post('salesGasto', [\App\Http\Controllers\SaleController::class, 'salesGasto']);
+    Route::post('/searchClient', [\App\Http\Controllers\ClientController::class,'searchClient']);
 });

@@ -20,8 +20,8 @@ class ClientFactory extends Factory
             'nit'=> $this->faker->numberBetween(100000000, 999999999),
             'name'=> $this->faker->name(),
             'phone'=> $this->faker->phoneNumber(),
-            'address'=> $this->faker->address(),
-            'type'=> $this->faker->randomElement(['client', 'provider']),
+            'email'=> $this->faker->email(),
+            'type'=> $this->faker->randomElement(['Cliente', 'Proveedor']),
         ];
     }
 }

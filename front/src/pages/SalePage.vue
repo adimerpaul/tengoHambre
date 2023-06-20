@@ -112,7 +112,7 @@
                           <q-img :src="props.row.imagen.includes('http')?props.row.imagen:`${$url}../images/${props.row.imagen}`" width="40px" height="80px" />
                         </div>
                         <div class="col-9">
-                          <div>{{props.row.name}}</div>
+                          <div class="text-bold">{{props.row.name}}</div>
 <!--                          <div class="text-grey">Disponible: {{props.row.cantidad}}</div>-->
                           <div>
                             <div class="row">
@@ -198,56 +198,56 @@
         <q-form @submit.prevent="saleInsert">
           <q-card-section>
             <div class="row">
-              <div class="col-6 col-md-3">
-                <q-input outlined dense label="NIT/CARNET" @keyup="searchClient" required v-model="client.numeroDocumento"   />
+              <div class="col-12 col-md-3">
+                <q-input outlined dense label="NIT/CARNET" @keyup="searchClient" required v-model="client.nit"   />
 <!--                <pre>{{client}}</pre>-->
 <!--                <pre>{{document}}</pre>-->
               </div>
-              <div class="col-6 col-md-3">
-                <q-input outlined dense label="Complemento"  @keyup="searchClient" v-model="client.complemento" style="text-transform: uppercase"/>
-              </div>
+<!--              <div class="col-6 col-md-3">-->
+<!--                <q-input outlined dense label="Complemento"  @keyup="searchClient" v-model="client.complemento" style="text-transform: uppercase"/>-->
+<!--              </div>-->
               <div class="col-12 col-md-6">
-                <q-input outlined dense label="Nombre Razon Social" required v-model="client.nombreRazonSocial" style="text-transform: uppercase" />
+                <q-input outlined dense label="Nombre Razon Social" required v-model="client.name" style="text-transform: uppercase" />
               </div>
-              <div class="col-12 col-md-6">
-<!--                @update:model-value="validarnit"-->
-                <q-select v-model="document" outlined dense :options="documents" />
-              </div>
-              <div class="col-12 col-md-6">
-                <q-input outlined dense label="Email"  v-model="client.email" type="email" />
+<!--              <div class="col-12 col-md-3">-->
+<!--&lt;!&ndash;                @update:model-value="validarnit"&ndash;&gt;-->
+<!--                <q-select v-model="document" outlined dense :options="documents" />-->
+<!--              </div>-->
+              <div class="col-12 col-md-3">
+                <q-input outlined dense label="Celular" v-model="client.phone" />
               </div>
             </div>
           </q-card-section>
           <q-separator/>
           <q-card-section>
             <div class="row">
-              <div class="col-6 col-md-2">
+              <div class="col-6 col-md-4">
                 <q-input outlined dense label="TOTAL A PAGAR:" readonly v-model="total" />
               </div>
-              <div class="col-6 col-md-3">
+              <div class="col-6 col-md-4">
                 <q-input outlined dense label="EFECTIVO BS."  v-model="efectivo" />
               </div>
-              <div class="col-6 col-md-2">
+              <div class="col-6 col-md-4">
                 <q-input outlined dense label="CAMBIO:" readonly v-model="cambio" />
               </div>
-              <div class="col-6 col-md-2">
-                <q-checkbox v-model="aporte" :label="textoCambio"
-                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"
-                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true">
-                  <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-                    Si el cliente paga con un monto mayor al total, se registrará el cambio como un aporte.
-                  </q-tooltip>
-                </q-checkbox>
-              </div>
+<!--              <div class="col-6 col-md-2">-->
+<!--                <q-checkbox v-model="aporte" :label="textoCambio"-->
+<!--                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"-->
+<!--                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true">-->
+<!--                  <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">-->
+<!--                    Si el cliente paga con un monto mayor al total, se registrará el cambio como un aporte.-->
+<!--                  </q-tooltip>-->
+<!--                </q-checkbox>-->
+<!--              </div>-->
 <!--              <div class="col-6 col-md-2 q-pl-xs">-->
 <!--                <q-checkbox v-model="qr" label="QR"-->
 <!--                            :class="`bg-${parseFloat(efectivo)> parseFloat(total)?'green':'red'} text-white full-width bi-border-all`"-->
 <!--                            :disable="parseFloat(efectivo)> parseFloat(total)?false:true" />-->
 <!--              </div>-->
-              <div class="col-6 col-md-3">
-                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"
-                          :options="$metodoPago" hint="Metodo de pago del gasto" />
-              </div>
+<!--              <div class="col-6 col-md-3">-->
+<!--                <q-select dense outlined v-model="metodoPago" label="Metodo de pago"-->
+<!--                          :options="$metodoPago" hint="Metodo de pago del gasto" />-->
+<!--              </div>-->
 <!--              <div class="col-12">-->
 <!--                <pre>{{cambioDecimal}}</pre>-->
 <!--              </div>-->
@@ -284,7 +284,7 @@ export default {
       documents: ['CI', 'NIT', 'RUC', 'PASAPORTE'],
       metodoPago: 'Efectivo',
       // textoCambio: 'Aporte',
-      document: {},
+      document: 'CI',
       current_page: 1,
       last_page: 1,
       ruleNumber: [
@@ -366,9 +366,7 @@ export default {
           p.cantidadPedida = 0
         })
         this.totalProducts = 0
-        Imprimir.factura(res.data).then(r => {
-          // console.log(r)
-        })
+        Imprimir.facturaPdf(res.data)
       }).catch(err => {
         this.loading = false
         this.$alert.error(err.response.data.message)
@@ -376,13 +374,13 @@ export default {
     },
     clientSearch () {
       this.$axios.post('searchClient', this.client).then(res => {
-        if (res.data.nombreRazonSocial !== undefined) {
-          this.client.nombreRazonSocial = res.data.nombreRazonSocial
-          this.client.email = res.data.email
+        if (res.data.name !== undefined) {
+          this.client.name = res.data.name
+          this.client.phone = res.data.phone
           this.client.id = res.data.id
-          const documento = this.documents.find(r => r.codigoClasificador === res.data.codigoTipoDocumentoIdentidad)
-          documento.label = documento.descripcion
-          this.document = documento
+          // const documento = this.documents.find(r => r.codigoClasificador === res.data.codigoTipoDocumentoIdentidad)
+          // documento.label = documento.descripcion
+          // this.document = documento
         }
         // if(this.document.codigoClasificador==5) this.validarnit()
       })
@@ -390,13 +388,13 @@ export default {
     searchClient () {
       // console.log(this.client.numeroDocumento)
       this.document = this.documents[0]
-      this.client.nombreRazonSocial = ''
+      this.client.name = ''
       this.client.complemento = ''
-      this.client.email = ''
+      this.client.phone = ''
       this.client.id = undefined
-      if (this.client.numeroDocumento === '0') {
+      if (this.client.nit === '0') {
         this.clientSearch()
-      } else if (this.client.numeroDocumento.length >= 5) {
+      } else if (this.client.nit.length >= 5) {
         this.clientSearch()
       }
     },
@@ -406,7 +404,9 @@ export default {
       this.efectivo = ''
       this.qr = false
       this.client = {
-        complemento: ''
+        nit: '0',
+        name: 'SN',
+        phone: ''
       }
       this.metodoPago = 'Efectivo'
     },
@@ -492,7 +492,7 @@ export default {
         res.data.products.data.forEach(p => {
           p.cantidadPedida = 0
           p.cantidadReal = p.cantidad
-          p.precioVenta = p.precio
+          p.precioVenta = p.price
           this.products.push(p)
         })
       }).catch(err => {
