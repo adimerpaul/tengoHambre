@@ -22,8 +22,8 @@ export class Imprimir {
     doc.text(useCounterStore().env.direccion, 28, y+8, { align: 'center', maxWidth: 50 })
     doc.text(useCounterStore().env.telefono, 28, y+16, { align: 'center' })
     doc.setFont(undefined, 'bold')
-    // doc.text(useCounterStore().user.sucursal, 28, y+20, { align: 'center' })
-    // doc.line(5, y+22, 50, y+22)
+    doc.text(useCounterStore().user.sucursal, 28, y+20, { align: 'center' })
+    doc.line(5, y+22, 50, y+22)
 
     doc.setFontSize(9)
     doc.text('CLIENTE', 5, y+25)
