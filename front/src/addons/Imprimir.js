@@ -16,8 +16,8 @@ export class Imprimir {
     let y = 5
     doc.setFont('courier', 'bold')
     doc.setFontSize(10)
-    // doc.text(useCounterStore().env.razon, 28, y, { align: 'center' })
-    // doc.setFont(undefined, 'normal')
+    doc.text(useCounterStore().env.razon, 28, y, { align: 'center' })
+    doc.setFont(undefined, 'normal')
     // doc.text(useCounterStore().env.nit, 28, y+4, { align: 'center' })
     // doc.text(useCounterStore().env.direccion, 28, y+8, { align: 'center', maxWidth: 50 })
     // doc.text(useCounterStore().env.telefono, 28, y+16, { align: 'center' })
