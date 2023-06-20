@@ -36,36 +36,36 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-12 col-md-6 q-pa-xs">
-        <q-card class="">
-          <q-card-section class="q-pa-none">
-            <q-item>
-              <q-item-section avatar>
-                <q-btn icon="o_local_atm" size="22px" color="green-7" class="bg-green-2"  flat />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-subtitle2 text-grey">Costo total de inventario</q-item-label>
-                <q-item-label :class="`text-bold text-h6 text-${costoTotalProducts>0?'green':'red'}`">{{costoTotalProducts}} Bs</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div class="col-12 col-md-3 q-pa-xs flex flex-center">
-        <q-btn outline no-caps icon="o_edit" class="full-width" label="Editar categoria" @click="categoryDialog=true" />
-      </div>
-      <div class="col-12 col-md-3 q-pa-xs">
-        <q-select class="bg-white" emit-value map-options dense outlined
-                  v-model="category" option-value="id" option-label="name" :options="categories"
-                  @update:model-value="productsGet"
-        >
-          <template v-slot:before>
-            <q-btn color="green" dense size="15px" flat no-caps icon="o_add_circle_outline" @click="showAddCategory">
-              <q-tooltip>Crear categoria</q-tooltip>
-            </q-btn>
-          </template>
-        </q-select>
-      </div>
+<!--      <div class="col-12 col-md-6 q-pa-xs">-->
+<!--        <q-card class="">-->
+<!--          <q-card-section class="q-pa-none">-->
+<!--            <q-item>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-btn icon="o_local_atm" size="22px" color="green-7" class="bg-green-2"  flat />-->
+<!--              </q-item-section>-->
+<!--              <q-item-section>-->
+<!--                <q-item-label class="text-subtitle2 text-grey">Costo total de inventario</q-item-label>-->
+<!--                <q-item-label :class="`text-bold text-h6 text-${costoTotalProducts>0?'green':'red'}`">{{costoTotalProducts}} Bs</q-item-label>-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
+<!--          </q-card-section>-->
+<!--        </q-card>-->
+<!--      </div>-->
+<!--      <div class="col-12 col-md-3 q-pa-xs flex flex-center">-->
+<!--        <q-btn outline no-caps icon="o_edit" class="full-width" label="Editar categoria" @click="categoryDialog=true" />-->
+<!--      </div>-->
+<!--      <div class="col-12 col-md-3 q-pa-xs">-->
+<!--        <q-select class="bg-white" emit-value map-options dense outlined-->
+<!--                  v-model="category" option-value="id" option-label="name" :options="categories"-->
+<!--                  @update:model-value="productsGet"-->
+<!--        >-->
+<!--          <template v-slot:before>-->
+<!--            <q-btn color="green" dense size="15px" flat no-caps icon="o_add_circle_outline" @click="showAddCategory">-->
+<!--              <q-tooltip>Crear categoria</q-tooltip>-->
+<!--            </q-btn>-->
+<!--          </template>-->
+<!--        </q-select>-->
+<!--      </div>-->
       <div class="col-12 col-md-3 q-pa-xs">
         <q-select class="bg-white" label="Ordenar" dense outlined v-model="order"
                   :options="orders" map-options emit-value
@@ -73,13 +73,13 @@
                   @update:model-value="productsGet"
         />
       </div>
-      <div class="col-12 col-md-3 q-pa-xs">
-        <q-select class="bg-white" label="Agencia" dense outlined v-model="agencia"
-                  :options="agencias" map-options emit-value
-                  option-value="id" option-label="nombre"
-                  @update:model-value="productsGet"
-        />
-      </div>
+<!--      <div class="col-12 col-md-3 q-pa-xs">-->
+<!--        <q-select class="bg-white" label="Agencia" dense outlined v-model="agencia"-->
+<!--                  :options="agencias" map-options emit-value-->
+<!--                  option-value="id" option-label="nombre"-->
+<!--                  @update:model-value="productsGet"-->
+<!--        />-->
+<!--      </div>-->
       <div class="col-12 flex flex-center">
         <q-pagination
           v-model="current_page"
@@ -97,12 +97,12 @@
                 <q-card @click="clickDetalleProducto(p)">
                   <q-img :src="p.imagen.includes('http')?p.imagen:`${$url}../images/${p.imagen}`" width="100%" height="100px">
                     <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;">
-                      {{p.nombre}}
+                      {{p.name}}
                     </div>
                   </q-img>
                   <q-card-section class="q-pa-none q-ma-none">
-                    <div class="text-center text-subtitle2">{{ p.precio }} Bs</div>
-                    <div :class="p.cantidad<=0?'text-center text-bold text-red':' text-center text-bold'">{{ p.cantidad }} {{ $q.screen.lt.md?'Dis':'Disponible' }}</div>
+                    <div class="text-center text-subtitle2 text-bold">{{ p.price }} Bs</div>
+<!--                    <div :class="p.cantidad<=0?'text-center text-bold text-red':' text-center text-bold'">{{ p.cantidad }} {{ $q.screen.lt.md?'Dis':'Disponible' }}</div>-->
                   </q-card-section>
                 </q-card>
               </div>
@@ -136,54 +136,54 @@
         <q-card-section>
           <q-form v-if="productAction === 'ver'">
             <div class="flex flex-center">
-              <q-img :src="product.imagen.includes('http')?product.imagen:`${$url}../images/${product.imagen}`" width="200px" height="200px">
+              <q-img :src="product.imagen.includes('http')?product.imagen:`${$url}../images/${product.imagen}`" width="200px">
                 <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;">
-                  {{product.nombre}}
+                  {{product.name}}
                 </div>
               </q-img>
             </div>
             <q-card-section class="q-pa-none q-ma-none">
-              <div class="text-center text-subtitle2">{{ product.precio }} Bs</div>
-              <div :class="product.cantidad<=0?'text-center text-bold text-red':' text-center text-bold'">{{ product.cantidad }} Disponible</div>
+              <div class="text-center text-subtitle2">{{ product.price }} Bs</div>
+<!--              <div :class="product.cantidad<=0?'text-center text-bold text-red':' text-center text-bold'">{{ product.cantidad }} Disponible</div>-->
             </q-card-section>
             <q-card flat bordered class="bg-grey-1">
               <q-card-section>
                 <div class="row">
-                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">
-                      <q-icon name="o_qr_code_2" class="text-grey" size="20px" />
-                      Codigo de barras
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="text-grey text-caption text-right">{{ product.barra }}</div>
-                  </div>
+<!--                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">-->
+<!--                      <q-icon name="o_qr_code_2" class="text-grey" size="20px" />-->
+<!--                      Codigo de barras-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6">-->
+<!--                    <div class="text-grey text-caption text-right">{{ product.barra }}</div>-->
+<!--                  </div>-->
                   <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">
                       <q-icon name="o_paid" class="text-grey" size="20px" />
                       Precio
                   </div>
                   <div class="col-12 col-md-6">
-                    <div class="text-grey text-caption text-right">{{ product.precio }} Bs</div>
+                    <div class="text-grey text-caption text-right">{{ product.price }} Bs</div>
                   </div>
-                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">
-                      <q-icon name="o_shopping_bag" class="text-grey" size="20px" />
-                      Costo
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="text-grey text-caption text-right">{{ product.costo }} Bs</div>
-                  </div>
-                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">
-                    <q-icon name="o_local_shipping" class="text-grey" size="20px" />
-                    Agencia
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="text-grey text-caption text-right" v-if="product.agencia">{{ product.agencia.nombre }}</div>
-                  </div>
-                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">
-                      <q-icon name="o_shopping_cart" class="text-grey" size="20px" />
-                      Categoria
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="text-grey text-caption text-right" v-if="product.category">{{ product.category.name }}</div>
-                  </div>
+<!--                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">-->
+<!--                      <q-icon name="o_shopping_bag" class="text-grey" size="20px" />-->
+<!--                      Costo-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6">-->
+<!--                    <div class="text-grey text-caption text-right">{{ product.costo }} Bs</div>-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">-->
+<!--                    <q-icon name="o_local_shipping" class="text-grey" size="20px" />-->
+<!--                    Agencia-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6">-->
+<!--                    <div class="text-grey text-caption text-right" v-if="product.agencia">{{ product.agencia.nombre }}</div>-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6 text-subtitle2 text-bold text-grey">-->
+<!--                      <q-icon name="o_shopping_cart" class="text-grey" size="20px" />-->
+<!--                      Categoria-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6">-->
+<!--                    <div class="text-grey text-caption text-right" v-if="product.category">{{ product.category.name }}</div>-->
+<!--                  </div>-->
                 </div>
               </q-card-section>
             </q-card>
@@ -219,24 +219,24 @@
             </div>
             <q-input outlined v-model="product.imagen" label="Imagen" dense hint="Selecciona una imagen" />
             <div class="text-grey text-caption">Te recomendamos que la imagen tenga un tamaño de 500 x 500 px en formato PNG y pese máximo 2MB.</div>
-            <q-input outlined v-model="product.nombre" label="Nombre del producto*" dense hint="Recuerda, este debe ser único en tu inventario" :rules="[val => !!val || 'Este campo es requerido']" />
-            <q-input outlined v-model="product.barra" label="Código de barras" dense hint="Escríbelo o escanéalo" />
-            <q-input outlined v-model="product.cantidad" label="Cantidad" input-class="text-center" dense hint="">
-              <template v-slot:append>
-                <q-icon name="o_add_circle_outline" @click="cantidadMore" class="cursor-pointer"/>
-              </template>
-              <template v-slot:prepend>
-                <q-icon name="o_remove_circle_outline" @click="cantidadMinus" class="cursor-pointer"/>
-              </template>
-            </q-input>
-            <q-input outlined v-model="product.costo" label="Costo" dense hint="Valor que pagas al proveedor por el producto"/>
-            <q-input outlined v-model="product.precio" label="Precio*" dense hint="Valor que le cobras a tus clientes por el producto" :rules="[val => !!val || 'Este campo es requerido']"/>
-            <q-select class="bg-white" emit-value map-options label="Categoria" dense outlined v-model="product.category_id" option-value="id" option-label="name" :options="categories" hint="Selecciona una categoria"/>
-            <q-input type="textarea" outlined v-model="product.descripcion" label="Descripción" dense hint="Agrega una descripción del producto"/>
-            <q-select class="bg-white" emit-value map-options label="Agencia" dense outlined v-model="product.agencia_id" option-value="id" option-label="nombre" :options="agencias" hint="Selecciona una agencia" :rules="[val => !!val || 'Este campo es requerido']"/>
+            <q-input outlined v-model="product.name" label="Nombre del producto*" dense hint="Recuerda, este debe ser único en tu inventario" :rules="[val => !!val || 'Este campo es requerido']" />
+<!--            <q-input outlined v-model="product.barra" label="Código de barras" dense hint="Escríbelo o escanéalo" />-->
+<!--            <q-input outlined v-model="product.cantidad" label="Cantidad" input-class="text-center" dense hint="">-->
+<!--              <template v-slot:append>-->
+<!--                <q-icon name="o_add_circle_outline" @click="cantidadMore" class="cursor-pointer"/>-->
+<!--              </template>-->
+<!--              <template v-slot:prepend>-->
+<!--                <q-icon name="o_remove_circle_outline" @click="cantidadMinus" class="cursor-pointer"/>-->
+<!--              </template>-->
+<!--            </q-input>-->
+<!--            <q-input outlined v-model="product.costo" label="Costo" dense hint="Valor que pagas al proveedor por el producto"/>-->
+            <q-input outlined v-model="product.price" label="Precio*" dense hint="Valor que le cobras a tus clientes por el producto" :rules="[val => !!val || 'Este campo es requerido']"/>
+<!--            <q-select class="bg-white" emit-value map-options label="Categoria" dense outlined v-model="product.category_id" option-value="id" option-label="name" :options="categories" hint="Selecciona una categoria"/>-->
+<!--            <q-input type="textarea" outlined v-model="product.descripcion" label="Descripción" dense hint="Agrega una descripción del producto"/>-->
+<!--            <q-select class="bg-white" emit-value map-options label="Agencia" dense outlined v-model="product.agencia_id" option-value="id" option-label="nombre" :options="agencias" hint="Selecciona una agencia" :rules="[val => !!val || 'Este campo es requerido']"/>-->
             <q-btn class="full-width" rounded
-                   :color="!product.nombre || !product.precio ? 'grey' : 'green'"
-                   :disable="!product.nombre || !product.precio"
+                   :color="!product.name || !product.price ? 'grey' : 'green'"
+                   :disable="!product.name || !product.price"
                    label="Guardar" no-caps type="submit" :loading="loading"/>
           </q-form>
         </q-card-section>
@@ -302,18 +302,18 @@ export default {
       order: 'id',
       orders: [
         { label: 'Ordenar por', value: 'id' },
-        { label: 'Menor precio', value: 'precio asc' },
-        { label: 'Mayor precio', value: 'precio desc' },
-        { label: 'Menor cantidad', value: 'cantidad asc' },
-        { label: 'Mayor cantidad', value: 'cantidad desc' },
-        { label: 'Orden alfabetico', value: 'nombre asc' }
+        { label: 'Menor precio', value: 'price asc' },
+        { label: 'Mayor precio', value: 'price desc' },
+        // { label: 'Menor cantidad', value: 'cantidad asc' },
+        // { label: 'Mayor cantidad', value: 'cantidad desc' },
+        { label: 'Orden alfabetico', value: 'name asc' }
       ],
       costoTotalProducts: 0
     }
   },
   created () {
-    this.categoriesGet()
-    this.agenciasGet()
+    // this.categoriesGet()
+    // this.agenciasGet()
     this.productsGet()
   },
   methods: {

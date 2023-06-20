@@ -10,33 +10,33 @@
               </template>
             </q-input>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-3">
             <q-btn :loading="loading" icon="refresh" dense color="grey-7" flat @click="productsGet">
               <q-tooltip>Actualizar</q-tooltip>
             </q-btn>
           </div>
-          <div class="col-12 col-md-4 q-pa-xs">
-            <q-select class="bg-white" emit-value map-options dense outlined
-                      v-model="category" option-value="id" option-label="name" :options="categories"
-                      @update:model-value="productsGet"
-            >
-            </q-select>
-          </div>
-          <div class="col-12 col-md-4 q-pa-xs">
+<!--          <div class="col-12 col-md-4 q-pa-xs">-->
+<!--            <q-select class="bg-white" emit-value map-options dense outlined-->
+<!--                      v-model="category" option-value="id" option-label="name" :options="categories"-->
+<!--                      @update:model-value="productsGet"-->
+<!--            >-->
+<!--            </q-select>-->
+<!--          </div>-->
+          <div class="col-12 col-md-3 q-pa-xs">
             <q-select class="bg-white" label="Ordenar" dense outlined v-model="order"
                       :options="orders" map-options emit-value
                       option-value="value" option-label="label"
                       @update:model-value="productsGet"
             />
           </div>
-          <div class="col-12 col-md-4 q-pa-xs">
-            <q-select class="bg-white" label="Agencia" dense outlined v-model="$store.agencia_id"
-                      :options="agencias" map-options emit-value
-                      option-value="id" option-label="nombre"
-                      @update:model-value="productsGet"
-                      :disable="!($store.user.id=='1')"
-            />
-          </div>
+<!--          <div class="col-12 col-md-4 q-pa-xs">-->
+<!--            <q-select class="bg-white" label="Agencia" dense outlined v-model="$store.agencia_id"-->
+<!--                      :options="agencias" map-options emit-value-->
+<!--                      option-value="id" option-label="nombre"-->
+<!--                      @update:model-value="productsGet"-->
+<!--                      :disable="!($store.user.id=='1')"-->
+<!--            />-->
+<!--          </div>-->
           <div class="col-12 flex flex-center">
             <q-pagination
               v-model="current_page"
@@ -54,13 +54,13 @@
                     <q-card @click="clickAddSale(p)" class="q-pa-xs" flat bordered>
                       <q-img :src="p.imagen.includes('http')?p.imagen:`${$url}../images/${p.imagen}`" width="100%" height="100px">
                         <div class="absolute-bottom text-center text-subtitle2" style="padding: 0px 0px;">
-                          {{p.nombre}}
+                          {{p.name}}
                         </div>
                         <q-badge v-if="p.cantidadPedida>0" color="yellow-9" floating :label="p.cantidadPedida" style="padding: 5px"/>
                       </q-img>
                       <q-card-section class="q-pa-none q-ma-none">
-                        <div class="text-center text-subtitle2">{{ p.precio }} Bs</div>
-                        <div :class="p.cantidad<=0?'text-center text-bold text-red':' text-center text-bold'">{{ p.cantidad }} {{ $q.screen.lt.md?'Dis':'Disponible' }}</div>
+                        <div class="text-center text-subtitle2 text-bold">{{ p.price }} Bs</div>
+<!--                        <div :class="p.cantidad<=0?'text-center text-bold text-red':' text-center text-bold'">{{ p.cantidad }} {{ $q.screen.lt.md?'Dis':'Disponible' }}</div>-->
                       </q-card-section>
                     </q-card>
                   </div>
@@ -112,8 +112,8 @@
                           <q-img :src="props.row.imagen.includes('http')?props.row.imagen:`${$url}../images/${props.row.imagen}`" width="40px" height="80px" />
                         </div>
                         <div class="col-9">
-                          <div>{{props.row.nombre}}</div>
-                          <div class="text-grey">Disponible: {{props.row.cantidad}}</div>
+                          <div>{{props.row.name}}</div>
+<!--                          <div class="text-grey">Disponible: {{props.row.cantidad}}</div>-->
                           <div>
                             <div class="row">
                               <div class="col-8">
@@ -177,7 +177,7 @@
                           </q-tooltip>
                         </q-icon>
                       </div>
-                      <div class="col-5 text-right text-green">{{totalganancia}} Bs</div>
+<!--                      <div class="col-5 text-right text-green">{{totalganancia}} Bs</div>-->
                     </div>
                   </q-card-section>
                 </q-card>
@@ -281,7 +281,7 @@ export default {
       client: {},
       aporte: false,
       qr: false,
-      documents: [],
+      documents: ['CI', 'NIT', 'RUC', 'PASAPORTE'],
       metodoPago: 'Efectivo',
       // textoCambio: 'Aporte',
       document: {},
@@ -317,26 +317,25 @@ export default {
       ],
       orders: [
         { label: 'Ordenar por', value: 'id' },
-        { label: 'Menor precio', value: 'precio asc' },
-        { label: 'Mayor precio', value: 'precio desc' },
-        { label: 'Menor cantidad', value: 'cantidad asc' },
-        { label: 'Mayor cantidad', value: 'cantidad desc' },
-        { label: 'Orden alfabetico', value: 'nombre asc' }
+        { label: 'Menor precio', value: 'price asc' },
+        { label: 'Mayor precio', value: 'price desc' },
+        // { label: 'Menor cantidad', value: 'cantidad asc' },
+        // { label: 'Mayor cantidad', value: 'cantidad desc' },
+        { label: 'Orden alfabetico', value: 'name asc' }
       ]
     }
   },
   mounted () {
     this.productsGet()
-    this.categoriesGet()
-    this.agenciasGet()
-    this.$axios.get('documents').then(res => {
-      // console.log(this.documents)
-      res.data.forEach(r => {
-        r.label = r.descripcion
-      })
-      this.documents = res.data
-      this.document = this.documents[0]
-    })
+    // this.categoriesGet()
+    // this.$axios.get('documents').then(res => {
+    //   // console.log(this.documents)
+    //   res.data.forEach(r => {
+    //     r.label = r.descripcion
+    //   })
+    //   this.documents = res.data
+    //   this.document = this.documents[0]
+    // })
   },
   methods: {
     saleInsert () {
@@ -468,14 +467,6 @@ export default {
         product.cantidadVenta = 1
         this.$store.productosVenta.push(product)
       }
-    },
-    agenciasGet () {
-      this.agencias = [{ nombre: 'Selecciona una agencia', id: 0 }]
-      this.$axios.get('agencias').then(response => {
-        this.agencias = this.agencias.concat(response.data)
-      }).catch(error => {
-        this.$alert.error(error.response.data.message)
-      })
     },
     categoriesGet () {
       this.categories = [{ name: 'Ver todas las categorias', id: 0 }]

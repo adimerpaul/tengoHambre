@@ -24,5 +24,6 @@ Route::group(['middleware'=>'auth:sanctum'],function () {
     Route::post('/logout', [\App\Http\Controllers\UserController::class, 'logout']);
     Route::resource('clients', \App\Http\Controllers\ClientController::class);
     Route::resource('sales', \App\Http\Controllers\SaleController::class);
+    Route::resource('products', \App\Http\Controllers\ProductController::class);
     Route::post('salesGasto', [\App\Http\Controllers\SaleController::class, 'salesGasto']);
 });

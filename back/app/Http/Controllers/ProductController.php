@@ -5,62 +5,69 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Facades\DB;
 
-class ProductController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class ProductController extends Controller{
+    public function index(){
+        $search = request()->get('search', '');
+        $search = $search == 'null' ? '' : $search;
+        $ordenar = request()->get('order', 'id');
+//        $category_id = request()->get('category', 'id');
+//        $agencia_id = request()->get('agencia', 'id');
+        $paginate = request()->get('paginate', 30);
+//        if ($category_id == 0 && $agencia_id == 0){
+            $products = Product::where('name', 'like', "%$search%")
+                ->orderByRaw($ordenar)
+                ->paginate($paginate);
+//            $costoRow=Product::select(DB::raw('sum(costo*cantidad)'))
+//                ->where('name', 'like', "%$search%")
+//                ->first();
+//            $costoTotal=$costoRow["sum(costo*cantidad)"]==null?0:$costoRow["sum(costo*cantidad)"];
+//        }else{
+//            if ($category_id == 0 && $agencia_id != 0){
+//                $products = Product::where('name', 'like', "%$search%")
+//                    ->where('agencia_id', $agencia_id)
+//                    ->orderByRaw($ordenar)
+//                    ->paginate($paginate);
+//                $costoRow=Product::select(DB::raw('sum(costo*cantidad)'))
+//                    ->where('name', 'like', "%$search%")
+//                    ->where('agencia_id', $agencia_id)
+//                    ->first();
+//                $costoTotal=$costoRow["sum(costo*cantidad)"]==null?0:$costoRow["sum(costo*cantidad)"];
+//            }else if ($category_id != 0 && $agencia_id == 0){
+//                $products = Product::where('name', 'like', "%$search%")
+//                    ->where('category_id', $category_id)
+//                    ->orderByRaw($ordenar)
+//                    ->paginate($paginate);
+//                $costoRow=Product::select(DB::raw('sum(costo*cantidad)'))
+//                    ->where('name', 'like', "%$search%")
+//                    ->where('category_id', $category_id)
+//                    ->first();
+//                $costoTotal=$costoRow["sum(costo*cantidad)"]==null?0:$costoRow["sum(costo*cantidad)"];
+//            }else if ($category_id != 0 && $agencia_id != 0){
+//                $products = Product::where('name', 'like', "%$search%")
+//                    ->where('category_id', $category_id)
+//                    ->where('agencia_id', $agencia_id)
+//                    ->orderByRaw($ordenar)
+//                    ->paginate($paginate);
+//                $costoRow=Product::select(DB::raw('sum(costo*cantidad)'))
+//                    ->where('name', 'like', "%$search%")
+//                    ->where('category_id', $category_id)
+//                    ->where('agencia_id', $agencia_id)
+//                    ->first();
+//                $costoTotal=$costoRow["sum(costo*cantidad)"]==null?0:$costoRow["sum(costo*cantidad)"];
+//            }
+//        }
+        return json_encode(['products' => $products, 'costoTotal' => 0]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(StoreProductRequest $request){
+//        if ($request->category_id == 0) $request->merge(['category_id' => null]);
+//        if ($request->agencia_id == 0) $request->merge(['agencia_id' => null]);
+        return Product::create($request->all());
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProductRequest $request)
-    {
-        //
+    public function show(Product $product){ return $product; }
+    public function update(UpdateProductRequest $request, Product $product){
+        return $product->update($request->all());
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateProductRequest $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
+    public function destroy(Product $product){ return $product->delete(); }
 }
