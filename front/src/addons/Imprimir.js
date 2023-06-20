@@ -43,13 +43,13 @@ export class Imprimir {
     doc.text('CANT    PRODUCT   SUB', 5, y+41)
     let y2 = y+45
     doc.setFont(undefined, 'normal')
-    // sale.details.forEach(r => {
-    //   doc.setFontSize(7)
-    //   doc.text(`${r.quantity} ${r.productName}`, 5, y2, { maxWidth: 40 })
-    //   doc.setFontSize(9)
-    //   doc.text(`${r.total}`, 50, y2, { align: 'right'})
-    //   y2 += 4
-    // })
+    sale.details.forEach(r => {
+      doc.setFontSize(7)
+      doc.text(`${r.quantity} ${r.productName}`, 5, y2, { maxWidth: 40 })
+      doc.setFontSize(9)
+      doc.text(`${r.total}`, 50, y2, { align: 'right'})
+      y2 += 4
+    })
     y = y2
     doc.line(5, y, 50, y)
     doc.setFont(undefined, 'bold')
